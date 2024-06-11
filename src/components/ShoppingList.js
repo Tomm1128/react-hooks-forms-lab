@@ -6,7 +6,7 @@ import Item from "./Item";
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchedFood, setSearchFood] = useState("Search")
-  let currentFoodItems = items
+  const [submittedData, setSubmittedData] = useState(items)
 
   function handleCategoryChange(event) {
     setSelectedCategory(event.target.value);
@@ -18,10 +18,12 @@ function ShoppingList({ items }) {
   }
 
   const onItemFormSubmit = (formData) => {
-
+    console.log(formData)
+    let updatedList = [...submittedData, formData]
+    setSubmittedData(updatedList)
   }
 
-  const itemsToDisplay = currentFoodItems.filter((item) => {
+  const itemsToDisplay = submittedData.filter((item) => {
     if (searchedFood === "Search") return true
     else if (searchedFood.length > 0){
       let foodName = item.name.toLowerCase()
@@ -34,9 +36,7 @@ function ShoppingList({ items }) {
 
   return (
     <div className="ShoppingList">
-      <ItemForm
-        onItemFormSubmit={onItemFormSubmit}
-      />
+      <ItemForm onItemFormSubmit={onItemFormSubmit} />
       <Filter
       onSearchChange={updateFoodSearch}
       search = {searchedFood}
