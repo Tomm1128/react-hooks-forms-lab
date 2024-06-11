@@ -5,13 +5,24 @@ import Item from "./Item";
 
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchedFood, setSearchFood] = useState("")
 
   function handleCategoryChange(event) {
     setSelectedCategory(event.target.value);
   }
 
+  const updateFoodSearch = (event) => {
+    console.log(event.target.value)
+    setSearchFood(event.target.value)
+  }
+
   const itemsToDisplay = items.filter((item) => {
-    if (selectedCategory === "All") return true;
+    console.log(item)
+    if (searchedFood.length > 0){
+      let foodName = item.name.toLowerCase()
+      return foodName.includes(searchedFood)
+    }
+    else if (selectedCategory === "All") return true;
 
     return item.category === selectedCategory;
   });
@@ -19,7 +30,7 @@ function ShoppingList({ items }) {
   return (
     <div className="ShoppingList">
       <ItemForm />
-      <Filter onCategoryChange={handleCategoryChange} />
+      <Filter onSearchFood={updateFoodSearch} onCategoryChange={handleCategoryChange} />
       <ul className="Items">
         {itemsToDisplay.map((item) => (
           <Item key={item.id} name={item.name} category={item.category} />
