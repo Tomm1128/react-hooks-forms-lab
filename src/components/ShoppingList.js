@@ -5,45 +5,27 @@ import Item from "./Item";
 
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [searchedFood, setSearchFood] = useState("")
-  const [foodName, setFoodName] = useState("")
-  const [category, setCategory] = useState("Produce")
-  const [submittedData, setSubmittedData] = useState(items)
-
-  const handleFoodName = (event) => {
-    setFoodName(event.target.value)
-  }
-
-  const handleFoodCategory = (event) => {
-    setCategory(event.target.value)
-  }
-
-  console.log(submittedData)
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const formData = {
-      id: submittedData[submittedData.length - 1].id + 1,
-      name: foodName,
-      category: category
-      }
-    const formDataArray = [...submittedData,formData]
-    setSubmittedData(formDataArray)
-    console.log(submittedData)
-  }
+  const [searchedFood, setSearchFood] = useState("Search")
+  let currentFoodItems = items
 
   function handleCategoryChange(event) {
     setSelectedCategory(event.target.value);
   }
 
   const updateFoodSearch = (event) => {
+    console.log(event.target.value)
     setSearchFood(event.target.value)
   }
 
-  const itemsToDisplay = submittedData.filter((item) => {
-    if (searchedFood.length > 0){
+  const onItemFormSubmit = (formData) => {
+
+  }
+
+  const itemsToDisplay = currentFoodItems.filter((item) => {
+    if (searchedFood === "Search") return true
+    else if (searchedFood.length > 0){
       let foodName = item.name.toLowerCase()
-      return foodName.includes(searchedFood)
+      return foodName.includes(searchedFood) || item.name.includes(searchedFood)
     }
     else if (selectedCategory === "All") return true;
 
@@ -53,11 +35,13 @@ function ShoppingList({ items }) {
   return (
     <div className="ShoppingList">
       <ItemForm
-        onItemFormSubmit={handleSubmit}
-        onFoodNameInput={handleFoodName}
-        onCategoryInput={handleFoodCategory}
+        onItemFormSubmit={onItemFormSubmit}
       />
-      <Filter onSearchFood={updateFoodSearch} onCategoryChange={handleCategoryChange} />
+      <Filter
+      onSearchChange={updateFoodSearch}
+      search = {searchedFood}
+      onCategoryChange={handleCategoryChange}
+      />
       <ul className="Items">
         {itemsToDisplay.map((item) => (
           <Item key={item.id} name={item.name} category={item.category} />
