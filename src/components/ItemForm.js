@@ -20,7 +20,8 @@ function ItemForm({onItemFormSubmit}) {
       name: foodName,
       category: category
     }
-      onItemFormSubmit(formData)
+
+    onItemFormSubmit(formData)
   }
 
   return (

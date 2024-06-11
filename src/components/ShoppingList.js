@@ -13,12 +13,10 @@ function ShoppingList({ items }) {
   }
 
   const updateFoodSearch = (event) => {
-    console.log(event.target.value)
     setSearchFood(event.target.value)
   }
 
   const onItemFormSubmit = (formData) => {
-    console.log(formData)
     let updatedList = [...submittedData, formData]
     setSubmittedData(updatedList)
   }
